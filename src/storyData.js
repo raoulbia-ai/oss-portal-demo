@@ -138,6 +138,67 @@ export const storySequence = [
         serviceRestoration: '99.2% uptime maintained'
       }
     }
+  },
+  // Extended story continues here - Slide 25+
+  {
+    id: 9,
+    trigger: ["show", "configuration", "changes", "recent", "config"],
+    type: 'user',
+    content: 'Show recent configuration changes',
+    timestamp: null
+  },
+  {
+    id: 10,
+    trigger: "auto",
+    type: 'bot',
+    content: 'Here are the configuration changes',
+    timestamp: null,
+    hasAudio: false,
+    richMedia: {
+      type: 'config_logs',
+      data: {
+        title: 'Recent Network CM Logs',
+        context: 'Ath-Cent-02, Ath-Cent-03',
+        logs: [
+          {
+            time: 'Mon - 11:39',
+            cmTarget: 'Ath-Cent-02',
+            details: 'Antenna Tilt - Value: 21° → 25°'
+          },
+          {
+            time: 'Mon - 11:40',
+            cmTarget: 'Ath-Cent-03',
+            details: 'Antenna Tilt - Value: 24° → 26°'
+          },
+          {
+            time: 'Mon - 11:48',
+            cmTarget: 'Ath-Cent-02',
+            details: 'Power - Value: 240 → 251'
+          },
+          {
+            time: 'Mon - 11:42',
+            cmTarget: 'Ath-Cent-03',
+            details: 'Power - Value: 245 → 253'
+          }
+        ]
+      }
+    }
+  },
+  // Additional story elements can be added here for slides 27-38
+  {
+    id: 11,
+    trigger: ["thanks", "thank you", "great", "good", "excellent"],
+    type: 'user',
+    content: 'Thanks, that\'s really helpful',
+    timestamp: null
+  },
+  {
+    id: 12,
+    trigger: "auto",
+    type: 'bot',
+    content: 'You\'re welcome! The automated network management system handled this incident efficiently, maintaining service quality through intelligent compensation measures. Is there anything else you\'d like to know about the incident or our network operations?',
+    timestamp: null,
+    hasAudio: false
   }
 ];
 
