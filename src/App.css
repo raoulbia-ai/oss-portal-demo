@@ -267,15 +267,21 @@
   color: #6B7280;
 }
 
-.user-message {
+.user-message .message-bubble {
   background: #2563EB;
   color: white;
   margin-left: auto;
   max-width: 480px;
 }
 
-.user-message p {
+.user-message .message-bubble p {
   color: white;
+}
+
+.user-message {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .message-avatar.user-avatar {
