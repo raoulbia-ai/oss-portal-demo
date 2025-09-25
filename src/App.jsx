@@ -152,16 +152,8 @@ function App() {
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="p-2"
               >
-                {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                {sidebarOpen ? <X className="w-4 h-4 text-blue-600" /> : <Menu className="w-4 h-4 text-black" />}
               </Button>
-              {sidebarOpen && (
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-yellow-400 rounded flex items-center justify-center">
-                    <span className="text-xs font-bold text-black">!</span>
-                  </div>
-                  <span className="text-sm text-gray-600">NM Assistant</span>
-                </div>
-              )}
             </div>
 
             <nav className="space-y-2">
