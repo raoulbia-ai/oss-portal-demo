@@ -12,40 +12,32 @@ import {
   Bot,
   Pause
 } from 'lucide-react'
+import ericssonLogo from './assets/ericsson-logo.jpg'
+import robotIcon from './assets/robot-icon.jpg'
 import './App.css'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [message, setMessage] = useState("I did, it helped get my head around last night's incident on the train ride over, can you show me details ?")
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'bot',
       content: 'Hi Hannah',
-      timestamp: 'NM Assistant Tuesday 88:34',
-      hasAudio: false
+      timestamp: 'Tuesday 88:34'
     },
     {
       id: 2,
       type: 'bot',
       content: 'Did you listen to the Podcast report I sent this morning after the events of last night',
-      timestamp: '',
+      timestamp: 'Tuesday 88:34',
       hasAudio: true,
       audioPlaying: false
     }
   ])
+  const [message, setMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [activeNavItem, setActiveNavItem] = useState('NM Assistant')
   const messagesEndRef = useRef(null)
-
-  const navigationItems = [
-    { name: 'NM Assistant', active: true },
-    { name: 'Topology & Inventory', active: false },
-    { name: 'Network Automation', active: false },
-    { name: 'Apps', active: false },
-    { name: 'Tasks', active: false },
-    { name: 'System Health', active: false }
-  ]
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -78,17 +70,20 @@ function App() {
         "I have the complete incident report ready. This includes network performance metrics, affected services, and the resolution steps taken by the automation system."
       ]
 
+      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
+      
       const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: botResponses[Math.floor(Math.random() * botResponses.length)],
+        content: randomResponse,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        hasAudio: Math.random() > 0.5
+        hasAudio: Math.random() > 0.5,
+        audioPlaying: false
       }
 
-      setIsTyping(false)
       setMessages(prev => [...prev, botMessage])
-    }, 1500 + Math.random() * 1000)
+      setIsTyping(false)
+    }, 2000)
   }
 
   const handleKeyPress = (e) => {
@@ -127,7 +122,7 @@ function App() {
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
             <div className="ericsson-logo">
-              <Menu className="w-6 h-6" />
+              <img src={ericssonLogo} alt="Ericsson" className="w-6 h-6" />
             </div>
             <span className="text-lg font-medium">OSS Portal - Network Management Assistant :: Concept Demo ::</span>
           </div>
@@ -139,165 +134,180 @@ function App() {
           <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 p-2">
             <Grid3X3 className="w-5 h-5" />
           </Button>
-          <div className="flex items-center space-x-3">
-            <div className="user-avatar">
-              H
-            </div>
-            <span className="text-sm font-medium">Hannah J</span>
+          <div className="user-avatar">
+            H
           </div>
+          <span className="text-sm font-medium">Hannah J</span>
         </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className={`bg-white border-r border-gray-200 transition-all duration-300 ${
-          sidebarOpen ? 'w-60' : 'w-0'
-        } overflow-hidden`}>
+        <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-16'}`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-6">
-              <span className="text-gray-500 text-sm font-medium">Menu</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setSidebarOpen(false)}
-                className="text-gray-400 hover:text-gray-600 p-1"
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2"
               >
-                <X className="w-4 h-4" />
+                {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </Button>
-            </div>
-            <nav className="space-y-1">
-              {navigationItems.map((item, index) => (
-                <div
-                  key={index}
-                  className={`sidebar-nav-item ${activeNavItem === item.name ? 'active' : ''}`}
-                  onClick={() => handleNavItemClick(item.name)}
-                >
-                  {item.name}
+              {sidebarOpen && (
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-yellow-400 rounded flex items-center justify-center">
+                    <span className="text-xs font-bold text-black">!</span>
+                  </div>
+                  <span className="text-sm text-gray-600">NM Assistant</span>
                 </div>
+              )}
+            </div>
+
+            <nav className="space-y-2">
+              {[
+                'NM Assistant',
+                'Topology & Inventory',
+                'Network Automation',
+                'Apps',
+                'Tasks',
+                'System Health'
+              ].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => handleNavItemClick(item)}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                    activeNavItem === item
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  } ${!sidebarOpen && 'px-2'}`}
+                >
+                  {sidebarOpen ? item : item.charAt(0)}
+                </button>
               ))}
             </nav>
           </div>
-        </aside>
+        </div>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col">
-          {/* Chat Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4">
-            <div className="flex items-center space-x-4">
-              {!sidebarOpen && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setSidebarOpen(true)}
-                  className="text-gray-400 hover:text-gray-600 p-1"
-                >
-                  <Menu className="w-4 h-4" />
-                </Button>
-              )}
-              <span className="text-gray-400 text-lg font-medium">{activeNavItem}</span>
-            </div>
-          </div>
-
+        <div className="flex-1 flex flex-col">
           {/* Chat Messages */}
-          <div className="flex-1 overflow-y-auto p-6">
-            <div className="max-w-4xl mx-auto space-y-6">
-              {messages.map((msg) => (
-                <div key={msg.id} className="flex space-x-3">
-                  <div className={`message-avatar ${msg.type === 'user' ? 'user-avatar' : ''}`}>
-                    {msg.type === 'user' ? 'H' : <User className="w-4 h-4" />}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {messages.map((msg) => (
+              <div key={msg.id} className={`flex space-x-3 ${msg.type === 'user' ? 'justify-end' : ''}`}>
+                {msg.type === 'bot' && (
+                  <div className="message-avatar">
+                    <img src={robotIcon} alt="Bot" className="w-4 h-4 rounded-full" />
                   </div>
-                  <div className="flex-1">
-                    {msg.timestamp && (
-                      <div className="text-xs text-gray-500 mb-2">{msg.timestamp}</div>
-                    )}
-                    <div className={`message-bubble ${msg.type === 'user' ? 'user-message' : ''}`}>
-                      <p className="text-gray-800">{msg.content}</p>
-                      {msg.hasAudio && (
-                        <div className="audio-player">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-blue-600 hover:bg-blue-50 p-1 h-auto font-medium"
-                            onClick={() => toggleAudioPlayback(msg.id)}
-                          >
-                            {msg.audioPlaying ? (
-                              <Pause className="w-4 h-4 mr-1" />
-                            ) : (
-                              <Play className="w-4 h-4 mr-1" />
-                            )}
-                            <span className="text-sm">
-                              {msg.audioPlaying ? 'Pause' : 'Play Again'}
-                            </span>
-                          </Button>
-                          <div className="waveform">
-                            {[4, 8, 6, 12, 10, 7, 9, 5].map((height, i) => (
-                              <div 
-                                key={i} 
-                                className={`waveform-bar ${msg.audioPlaying ? 'animate-pulse' : ''}`}
-                                style={{ 
-                                  height: `${height}px`,
-                                  backgroundColor: msg.audioPlaying ? '#2563EB' : '#9CA3AF'
-                                }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                )}
+                
+                <div className={`flex-1 max-w-md ${msg.type === 'user' ? 'user-message' : ''}`}>
+                  {msg.type === 'bot' && (
+                    <div className="text-xs text-gray-500 mb-1">
+                      NM Assistant {msg.timestamp}
                     </div>
+                  )}
+                  {msg.type === 'user' && (
+                    <div className="text-xs text-white mb-1 text-right">
+                      {msg.timestamp}
+                    </div>
+                  )}
+                  
+                  <div className="message-bubble">
+                    <p className="text-sm">{msg.content}</p>
+                    
+                    {msg.hasAudio && (
+                      <div className="mt-3 flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => toggleAudioPlayback(msg.id)}
+                          className="audio-button"
+                        >
+                          {msg.audioPlaying ? (
+                            <>
+                              <Pause className="w-3 h-3 mr-1" />
+                              Pause
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-3 h-3 mr-1" />
+                              Play Again
+                            </>
+                          )}
+                        </Button>
+                        
+                        <div className="flex items-center space-x-1">
+                          {[...Array(8)].map((_, i) => (
+                            <div
+                              key={i}
+                              className={`waveform-bar ${msg.audioPlaying ? 'animate-pulse' : ''}`}
+                              style={{
+                                height: `${Math.random() * 16 + 8}px`,
+                                animationDelay: `${i * 0.1}s`
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
+
+                {msg.type === 'user' && (
+                  <div className="message-avatar user-avatar">
+                    H
+                  </div>
+                )}
+              </div>
+            ))}
 
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex space-x-3">
         <div className="message-avatar">
-          <Bot className="w-4 h-4" />
+          <img src={robotIcon} alt="Bot" className="w-4 h-4 rounded-full" />
         </div>
                   <div className="flex-1">
                     <div className="message-bubble">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="typing-dot"></div>
+                        <div className="typing-dot"></div>
+                        <div className="typing-dot"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-              <div ref={messagesEndRef} />
-            </div>
+
+            <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
-          <div className="bg-white border-t border-gray-200 p-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="input-container">
-                <input
-                  type="text"
+          {/* Message Input */}
+          <div className="border-t border-gray-200 p-4">
+            <div className="flex space-x-3">
+              <div className="flex-1 relative">
+                <Input
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="flex-1 border-none outline-none bg-transparent text-gray-800 placeholder-gray-500"
-                  disabled={isTyping}
+                  className="pr-12"
                 />
-                <div className="flex items-center space-x-2">
-                  <button 
-                    className="send-button"
-                    onClick={handleSendMessage}
-                    disabled={!message.trim() || isTyping}
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                  <button className="more-button">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
+              <Button
+                onClick={handleSendMessage}
+                disabled={!message.trim() || isTyping}
+                className="send-button"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="more-button">
+                <MoreHorizontal className="w-4 h-4" />
+              </Button>
             </div>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   )
