@@ -125,7 +125,7 @@
   height: 60px;
 }
 
-.oss-logo {
+.ericsson-logo {
   background: white;
   width: 32px;
   height: 32px;
@@ -133,24 +133,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #1F2937;
 }
 
-.oss-logo-inner {
-  background: #1F2937;
-  width: 24px;
-  height: 24px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.oss-logo-bar {
-  background: white;
-  width: 16px;
-  height: 4px;
-  border-radius: 2px;
-}
 
 .user-avatar {
   background: #14B8A6;

@@ -9,7 +9,7 @@ import {
   Play, 
   User,
   Grid3X3,
-  Printer,
+  Bot,
   Pause
 } from 'lucide-react'
 import './App.css'
@@ -126,17 +126,15 @@ function App() {
       <header className="oss-header text-white px-6 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
-            <div className="oss-logo">
-              <div className="oss-logo-inner">
-                <div className="oss-logo-bar"></div>
-              </div>
+            <div className="ericsson-logo">
+              <Menu className="w-6 h-6" />
             </div>
             <span className="text-lg font-medium">OSS Portal - Network Management Assistant :: Concept Demo ::</span>
           </div>
         </div>
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 p-2">
-            <Printer className="w-5 h-5" />
+            <Grid3X3 className="w-5 h-5" />
           </Button>
           <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 p-2">
             <Grid3X3 className="w-5 h-5" />
@@ -253,9 +251,9 @@ function App() {
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex space-x-3">
-                  <div className="message-avatar">
-                    <User className="w-4 h-4" />
-                  </div>
+        <div className="message-avatar">
+          <Bot className="w-4 h-4" />
+        </div>
                   <div className="flex-1">
                     <div className="message-bubble">
                       <div className="flex space-x-1">
