@@ -191,6 +191,11 @@ function App() {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
+          {/* Content Header */}
+          <div className="border-b border-gray-200 px-6 py-3">
+            <h2 className="text-gray-500 text-sm font-medium">NM Assistant</h2>
+          </div>
+          
           {/* Chat Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {messages.map((msg) => (
