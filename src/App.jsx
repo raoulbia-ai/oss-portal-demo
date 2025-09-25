@@ -14,29 +14,18 @@ import {
 } from 'lucide-react'
 import ericssonLogo from './assets/ericsson-logo.jpg'
 import robotIcon from './assets/robot-icon.jpg'
+import RichMedia from './components/RichMedia.jsx'
+import { storySequence, getStoryResponse } from './storyData.js'
 import './App.css'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: 'bot',
-      content: 'Hi Hannah',
-      timestamp: 'Tuesday 88:34'
-    },
-    {
-      id: 2,
-      type: 'bot',
-      content: 'Did you listen to the Podcast report I sent this morning after the events of last night',
-      timestamp: 'Tuesday 88:34',
-      hasAudio: true,
-      audioPlaying: false
-    }
-  ])
+  const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [activeNavItem, setActiveNavItem] = useState('NM Assistant')
+  const [currentStoryStep, setCurrentStoryStep] = useState(-1)
+  const [storyInitialized, setStoryInitialized] = useState(false)
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -46,6 +35,31 @@ function App() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // Initialize the story with the first two messages
+  useEffect(() => {
+    if (!storyInitialized) {
+      setStoryInitialized(true)
+      
+      // Add first message immediately
+      const firstMessage = {
+        ...storySequence[0],
+        timestamp: 'Tuesday 08:34'
+      }
+      setMessages([firstMessage])
+      setCurrentStoryStep(0)
+      
+      // Add second message after delay
+      setTimeout(() => {
+        const secondMessage = {
+          ...storySequence[1],
+          timestamp: 'Tuesday 08:34'
+        }
+        setMessages(prev => [...prev, secondMessage])
+        setCurrentStoryStep(1)
+      }, 1500)
+    }
+  }, [storyInitialized])
 
   const handleSendMessage = async () => {
     if (!message.trim()) return
@@ -61,29 +75,63 @@ function App() {
     setMessage('')
     setIsTyping(true)
 
-    // Simulate bot response delay
+    // Get story-driven response
     setTimeout(() => {
-      const botResponses = [
-        "I can see the incident details from last night. Let me pull up the network topology and show you what happened during the train route disruption.",
-        "Based on the podcast report, there were three main network segments affected. I'll display the fault analysis and recovery timeline for you.",
-        "The incident involved a cascade failure in the northern corridor. I can show you the real-time monitoring data and the automated recovery actions that were triggered.",
-        "I have the complete incident report ready. This includes network performance metrics, affected services, and the resolution steps taken by the automation system."
-      ]
-
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
+      const storyResponse = getStoryResponse(message, currentStoryStep)
       
-      const botMessage = {
-        id: Date.now() + 1,
-        type: 'bot',
-        content: randomResponse,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        hasAudio: Math.random() > 0.5,
-        audioPlaying: false
+      if (storyResponse) {
+        const botMessage = {
+          ...storyResponse,
+          id: Date.now() + 1,
+          timestamp: storyResponse.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+        
+        setMessages(prev => [...prev, botMessage])
+        setCurrentStoryStep(prev => prev + 1)
+        
+        // If this response has rich media or triggers auto-responses, handle them
+        if (storyResponse.richMedia || storySequence[currentStoryStep + 2]?.trigger === "auto") {
+          handleAutoResponses(currentStoryStep + 1)
+        }
       }
-
-      setMessages(prev => [...prev, botMessage])
+      
       setIsTyping(false)
-    }, 2000)
+    }, 1500)
+  }
+
+  const handleAutoResponses = (stepIndex) => {
+    let nextStep = stepIndex + 1
+    const delays = [2000, 3000, 2500, 3500] // Varied delays for natural feel
+    
+    const addNextAutoResponse = (delayIndex = 0) => {
+      const nextStoryItem = storySequence[nextStep]
+      
+      if (nextStoryItem && nextStoryItem.trigger === "auto") {
+        setTimeout(() => {
+          setIsTyping(true)
+          
+          setTimeout(() => {
+            const botMessage = {
+              ...nextStoryItem,
+              id: Date.now() + nextStep,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }
+            
+            setMessages(prev => [...prev, botMessage])
+            setCurrentStoryStep(nextStep)
+            setIsTyping(false)
+            
+            // Check for more auto responses
+            nextStep++
+            if (storySequence[nextStep]?.trigger === "auto") {
+              addNextAutoResponse(delayIndex + 1)
+            }
+          }, 1500)
+        }, delays[delayIndex % delays.length])
+      }
+    }
+    
+    addNextAutoResponse()
   }
 
   const handleKeyPress = (e) => {
@@ -246,6 +294,13 @@ function App() {
                             />
                           ))}
                         </div>
+                      </div>
+                    )}
+                    
+                    {/* Rich Media Content */}
+                    {msg.richMedia && (
+                      <div className="mt-4">
+                        <RichMedia type={msg.richMedia.type} data={msg.richMedia.data} />
                       </div>
                     )}
                   </div>
