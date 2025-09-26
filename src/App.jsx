@@ -27,7 +27,7 @@ function App() {
           <span className="text-sm text-black">Menu</span>
         </div>
         <div className="flex items-center">
-          <span className="text-sm text-gray-700 font-medium">NM Assistant</span>
+          <span className="text-sm text-gray-400 font-medium">NM Assistant</span>
         </div>
       </div>
 
