@@ -19,17 +19,16 @@ function App() {
       </header>
 
       {/* Full-width Grey Bar */}
-      <div className="bg-gray-200 border-b border-gray-300 flex items-center justify-between px-4 py-2">
+      <div className="bg-gray-200 border-b border-gray-300 flex items-center px-4 py-2">
         <div className="flex items-center gap-2 w-52">
           <button className="text-blue-600 hover:text-blue-800">
             <span className="text-lg">✕</span>
           </button>
           <span className="text-sm text-black">Menu</span>
         </div>
-        <div className="flex-1 text-center">
+        <div className="flex items-center">
           <span className="text-sm text-gray-700 font-medium">NM Assistant</span>
         </div>
-        <div className="w-52"></div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
