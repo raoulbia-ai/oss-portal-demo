@@ -92,73 +92,38 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="h-12 bg-black text-white flex items-center justify-between px-6 shadow-sm">
-        <div className="flex items-center space-x-4">
-          <img src={ericssonLogo} alt="Ericsson" className="w-8 h-8" />
-          <h1 className="text-sm font-normal tracking-wide">
-            OSS Portal – Network Management Assistant :: Concept Demo ::
-          </h1>
+      <header className="h-12 bg-black text-white flex items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <img src={ericssonLogo} alt="OSS Portal Logo" className="h-6" />
+          <span className="text-white text-sm">OSS Portal – Network Management Assistant :: Concept Demo</span>
         </div>
-        <div className="flex items-center space-x-4">
-          <button className="text-white hover:text-gray-300 transition-colors">
-            <Grid3X3 className="w-5 h-5" />
-          </button>
-          <button className="text-white hover:text-gray-300 transition-colors">
-            <Settings className="w-5 h-5" />
-          </button>
-          <div className="user-avatar">H</div>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm">H</span>
+          </div>
           <span className="text-white text-sm">Hannah J</span>
         </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-gray-100 border-r border-gray-300 h-full transition-all duration-300`}>
-          {/* Top section with Menu toggle and tabs */}
-          <div className="border-b border-gray-300">
-            <div className="flex items-center px-4 py-3">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-0 w-5 h-5 text-blue-600 hover:text-blue-800"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              {sidebarOpen && <span className="text-sm text-gray-600 ml-3">Menu</span>}
-            </div>
-            {sidebarOpen && (
-              <div className="flex">
-                <button className="flex-1 px-4 py-2 text-sm text-blue-600 border-b-2 border-blue-600 bg-white">
-                  NM Assistant
-                </button>
-              </div>
-            )}
-          </div>
-          
+        <div className="w-52 bg-gray-200 border-r border-gray-300 h-full">
           {/* Menu items */}
-          <div className="py-2">
-            <nav className="space-y-0">
-              {[
-                'NM Assistant',
-                'Topology & Inventory',
-                'Network Automation',
-                'Apps',
-                'Tasks',
-                'System Health'
-              ].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => handleNavItemClick(item)}
-                  className={`w-full text-left px-4 py-3 text-sm cursor-pointer transition-all duration-200 ${
-                    activeNavItem === item
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {sidebarOpen ? item : item.charAt(0)}
-                </button>
-              ))}
-            </nav>
-          </div>
+          <nav>
+            {navItems.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => handleNavItemClick(item)}
+                className={`w-full text-left px-4 py-2 text-sm border-b border-gray-300 ${
+                  activeNavItem === item
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
         </div>
 
         {/* Main Content */}
