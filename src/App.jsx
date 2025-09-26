@@ -11,7 +11,7 @@ import {
   Pause,
   Settings
 } from 'lucide-react'
-import ericssonLogo from './assets/ericsson-logo.jpg'
+import ericssonLogo from './assets/ericsson-logo-new.png'
 import robotIcon from './assets/robot-icon.jpg'
 import RichMedia from './components/RichMedia.jsx'
 import { storySequence, getStoryResponse } from './storyData.js'
