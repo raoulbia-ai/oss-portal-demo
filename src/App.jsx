@@ -163,10 +163,6 @@ function App() {
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
-          {/* Content Header */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4">
-            <h2 className="text-lg font-medium text-gray-800">NM Assistant</h2>
-          </div>
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
