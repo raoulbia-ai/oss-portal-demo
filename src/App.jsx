@@ -176,35 +176,40 @@ function App() {
                   <div className={`flex items-start space-x-3 ${msg.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
                     <div className="flex-shrink-0">
                       {msg.sender === 'user' ? (
-                        <div className="user-avatar">H</div>
+                        <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                          H
+                        </div>
                       ) : (
-                        <div className="bot-avatar">
-                          <img src={robotIcon} alt="Bot" className="w-8 h-8 rounded-full" />
+                        <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                          </svg>
                         </div>
                       )}
                     </div>
-                    <div className={`message-bubble ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}>
-                      <div className="message-header">
-                        <span className="sender-name">
+                    <div className={`${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-white border border-gray-200'} rounded-lg p-4 shadow-sm max-w-lg`}>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <span className={`text-sm font-medium ${msg.sender === 'user' ? 'text-white' : 'text-gray-600'}`}>
                           {msg.sender === 'user' ? 'Hannah J' : 'NM Assistant'}
                         </span>
-                        <span className="timestamp">{msg.timestamp}</span>
+                        <span className={`text-xs ${msg.sender === 'user' ? 'text-blue-100' : 'text-gray-400'}`}>
+                          {msg.timestamp}
+                        </span>
                       </div>
-                      <div className="message-content">
-                        <p>{msg.text}</p>
+                      <div className={`${msg.sender === 'user' ? 'text-white' : 'text-gray-800'}`}>
+                        <p className="text-sm leading-relaxed">{msg.text}</p>
                         
                         {/* Audio controls for bot messages */}
                         {msg.sender === 'bot' && (
-                          <div className="audio-controls">
-                            <button className="play-button">
-                              <Play className="w-4 h-4" />
+                          <div className="mt-3">
+                            <button className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-md text-sm text-gray-700 transition-colors">
                               <span>Play Again</span>
+                              <div className="flex items-center space-x-0.5">
+                                {Array.from({ length: 8 }).map((_, i) => (
+                                  <div key={i} className="w-0.5 h-3 bg-gray-400 rounded-full" />
+                                ))}
+                              </div>
                             </button>
-                            <div className="waveform">
-                              {Array.from({ length: 20 }).map((_, i) => (
-                                <div key={i} className="waveform-bar" />
-                              ))}
-                            </div>
                           </div>
                         )}
 
@@ -243,23 +248,23 @@ function App() {
           </div>
 
           {/* Input Area */}
-          <div className="bg-white border-t border-gray-200 p-4">
-            <div className="flex items-center space-x-3">
+          <div className="bg-white border-t border-gray-200 p-6">
+            <div className="flex items-center space-x-3 max-w-4xl">
               <input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Type your message..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
               />
               <button
                 onClick={handleSendMessage}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Send className="w-4 h-4" />
               </button>
-              <button className="px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors">
+              <button className="p-3 text-gray-500 hover:text-gray-700 transition-colors">
                 <MoreHorizontal className="w-4 h-4" />
               </button>
             </div>
