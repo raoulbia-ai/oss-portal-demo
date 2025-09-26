@@ -166,45 +166,53 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <header className="oss-header text-white px-6 flex items-center justify-between">
+      <header className="h-12 bg-black text-white flex items-center justify-between px-6 shadow-sm">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-3">
-            <div className="ericsson-logo">
-              <img src={ericssonLogo} alt="Ericsson" className="w-6 h-6" />
-            </div>
-            <span className="text-lg font-medium">OSS Portal - Network Management Assistant :: Concept Demo ::</span>
-          </div>
+          <img src={ericssonLogo} alt="Ericsson" className="w-8 h-8" />
+          <h1 className="text-sm font-normal tracking-wide">
+            OSS Portal – Network Management Assistant :: Concept Demo ::
+          </h1>
         </div>
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 p-2">
+          <Button variant="ghost" size="sm" className="text-white hover:text-gray-300 transition-colors">
             <Grid3X3 className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700 p-2">
-            <Grid3X3 className="w-5 h-5" />
+          <Button variant="ghost" size="sm" className="text-white hover:text-gray-300 transition-colors">
+            <Settings className="w-5 h-5" />
           </Button>
-          <div className="user-avatar">
-            H
-          </div>
-          <span className="text-sm font-medium">Hannah J</span>
+          <div className="user-avatar">H</div>
+          <span className="text-white text-sm">Hannah J</span>
         </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-16'}`}>
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-6">
+        <div className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-gray-100 border-r border-gray-300 h-full transition-all duration-300`}>
+          {/* Top section with Menu toggle and tabs */}
+          <div className="border-b border-gray-300">
+            <div className="flex items-center px-4 py-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2"
+                className="p-0 w-5 h-5 text-blue-600 hover:text-blue-800"
               >
-                {sidebarOpen ? <X className="w-4 h-4 text-blue-600" /> : <Menu className="w-4 h-4 text-black" />}
+                <X className="w-5 h-5" />
               </Button>
+              {sidebarOpen && <span className="text-sm text-gray-600 ml-3">Menu</span>}
             </div>
-
-            <nav className="space-y-2">
+            {sidebarOpen && (
+              <div className="flex">
+                <button className="flex-1 px-4 py-2 text-sm text-blue-600 border-b-2 border-blue-600 bg-white">
+                  NM Assistant
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {/* Menu items */}
+          <div className="py-2">
+            <nav className="space-y-0">
               {[
                 'NM Assistant',
                 'Topology & Inventory',
@@ -216,11 +224,11 @@ function App() {
                 <button
                   key={item}
                   onClick={() => handleNavItemClick(item)}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`w-full text-left px-4 py-3 text-sm cursor-pointer transition-all duration-200 ${
                     activeNavItem === item
                       ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  } ${!sidebarOpen && 'px-2'}`}
+                      : 'text-gray-700 hover:bg-gray-200'
+                  }`}
                 >
                   {sidebarOpen ? item : item.charAt(0)}
                 </button>
